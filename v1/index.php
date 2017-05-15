@@ -9,6 +9,60 @@ require '.././libs/Slim/Slim.php';
 $app = new \Slim\Slim();
 
 /* *
+ * URL: http://localhost/Monitor/v1/createPlace
+ * Parameters: name, latitude, longitude, raidus, address, phone
+ * Method: POST
+ * */
+$app->post('/createPlace', function () use ($app) {
+    verifyRequiredParams(array('name', 'latitude', 'longitude','raidus','address','phone'));
+    $response = array();
+    $name = $app->request->post('name');
+    $latitude = $app->request->post('latitude');
+    $longitude = $app->request->post('longitude');
+    $raidus = $app->request->post('raidus');
+    $address = $app->request->post('address');
+    $phone = $app->request->post('phone');
+    $db = new DbOperation();
+    $res = $db->createPlace($name, $latitude, $longitude, $raidus, $address, $phone);
+    if ($res == 0) {
+        $response["error"] = false;
+        $response["message"] = "Place successfully registered";
+        echoResponse(201, $response);
+    } else if ($res == 1) {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while registereing";
+        echoResponse(200, $response);
+    }
+});
+
+/* *
+ * URL: http://localhost/Monitor/v1/place
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/place', function() use ($app){
+    $db = new DbOperation();
+    $result = $db->getPlace();
+    $response = array();
+    $response['error'] = false;
+    $response['place'] = array();
+
+    while($row = $result->fetch_assoc()){
+        $temp = array();
+        $temp['id'] = $row['id'];
+        $temp['name'] = $row['name'];
+        $temp['latitude'] = $row['latitude'];
+        $temp['longitude'] = $row['longitude'];
+        $temp['radius'] = $row['radius'];
+        $temp['address'] = $row['address'];
+        $temp['phone'] = $row['phone'];
+        array_push($response['place'],$temp);
+    }
+
+    echoResponse(200,$response);
+});
+
+/* *
  * URL: http://localhost/Monitor/v1/createUser
  * Parameters: name, phone, deviceId, deviceBrand, deviceModel
  * Method: POST
@@ -24,9 +78,28 @@ $app->post('/createUser', function () use ($app) {
     $db = new DbOperation();
     $res = $db->createUser($name, $phone, $deviceId, $deviceBrand, $deviceModel);
     if ($res == 0) {
-        $response["error"] = false;
-        $response["message"] = "You are successfully registered";
-        echoResponse(201, $response);
+        // $response["error"] = false;
+        // $response["message"] = "You are successfully registered";
+        // echoResponse(201, $response);
+        $db = new DbOperation();
+        $result = $db->getPlace();
+        $response = array();
+        $response['error'] = false;
+        $response['place'] = array();
+
+        while($row = $result->fetch_assoc()){
+        $temp = array();
+        $temp['id'] = $row['id'];
+        $temp['name'] = $row['name'];
+        $temp['latitude'] = $row['latitude'];
+        $temp['longitude'] = $row['longitude'];
+        $temp['radius'] = $row['radius'];
+        $temp['address'] = $row['address'];
+        $temp['phone'] = $row['phone'];
+        array_push($response['place'],$temp);
+    }
+
+    echoResponse(200,$response);
     } else if ($res == 1) {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while registereing";
@@ -62,8 +135,7 @@ $app->get('/users', function() use ($app){
     echoResponse(200,$response);
 });
 
-function echoResponse($status_code, $response)
-{
+function echoResponse($status_code, $response) {
     $app = \Slim\Slim::getInstance();
     $app->status($status_code);
     $app->contentType('application/json');
@@ -71,8 +143,7 @@ function echoResponse($status_code, $response)
 }
 
 
-function verifyRequiredParams($required_fields)
-{
+function verifyRequiredParams($required_fields){
     $error = false;
     $error_fields = "";
     $request_params = $_REQUEST;
