@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2017 at 06:27 PM
+-- Generation Time: May 15, 2017 at 09:00 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -19,8 +19,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `monitor`
 --
-CREATE DATABASE IF NOT EXISTS `monitor` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `monitor`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `place`
+--
+
+CREATE TABLE `place` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  `radius` int(10) NOT NULL,
+  `address` varchar(150) NOT NULL,
+  `phone` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -42,6 +56,12 @@ CREATE TABLE `users` (
 --
 
 --
+-- Indexes for table `place`
+--
+ALTER TABLE `place`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -52,10 +72,15 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `place`
+--
+ALTER TABLE `place`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
