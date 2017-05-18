@@ -9,6 +9,46 @@ require '.././libs/Slim/Slim.php';
 $app = new \Slim\Slim();
 
 /* *
+ * URL: http://localhost/Monitor/cms/login
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/login', function() use ($app){
+    $response = array();
+    $response['error'] = false;
+    $response['login'] = '<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+    </head>
+    <body>
+        <form action="">
+            <div class="container">
+                <div class="intro-text">
+                    <h2>Login</h2>
+                    <p>Please enter the username and password below</p>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-6">
+                        <label><strong>Username</strong></label>
+                        <input type="text" placeholder="Enter Username" name="username">
+                        <label><strong>Password</strong></label>
+                        <input type="password" placeholder="Enter Password" name="password">
+                        <button type="submit">Login</button>
+                        <div>Dont have an account? <a href="register">Register here</a></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+    </html>';
+    echoResponse(200, $response);
+});
+
+/* *
  * URL: http://localhost/Monitor/v1/createPlace
  * Parameters: name, latitude, longitude, raidus, address, phone
  * Method: POST
@@ -88,18 +128,17 @@ $app->post('/createUser', function () use ($app) {
         $response['place'] = array();
 
         while($row = $result->fetch_assoc()){
-        $temp = array();
-        $temp['id'] = $row['id'];
-        $temp['name'] = $row['name'];
-        $temp['latitude'] = $row['latitude'];
-        $temp['longitude'] = $row['longitude'];
-        $temp['radius'] = $row['radius'];
-        $temp['address'] = $row['address'];
-        $temp['phone'] = $row['phone'];
-        array_push($response['place'],$temp);
-    }
-
-    echoResponse(200,$response);
+            $temp = array();
+            $temp['id'] = $row['id'];
+            $temp['name'] = $row['name'];
+            $temp['latitude'] = $row['latitude'];
+            $temp['longitude'] = $row['longitude'];
+            $temp['radius'] = $row['radius'];
+            $temp['address'] = $row['address'];
+            $temp['phone'] = $row['phone'];
+            array_push($response['place'],$temp);
+        }
+        echoResponse(200,$response);
     } else if ($res == 1) {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while registereing";
