@@ -240,7 +240,6 @@ $app->post('/placeconfig', function() use ($app){
         if ($result == 0) {
 
             $result = $db->getAllTokens();
-            var_dump($result);
             $tokens = array();
 
             if(mysqli_num_rows($result) > 0 ){
