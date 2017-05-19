@@ -108,15 +108,17 @@ $app->get('/place', function() use ($app){
  * Method: POST
  * */
 $app->post('/createUser', function () use ($app) {
-    verifyRequiredParams(array('name', 'phone', 'deviceId','deviceBrand','deviceModel'));
+    verifyRequiredParams(array('name', 'phone', 'deviceId','deviceBrand','deviceModel','latitude','longitude'));
     $response = array();
     $name = $app->request->post('name');
     $phone = $app->request->post('phone');
     $deviceId = $app->request->post('deviceId');
     $deviceBrand = $app->request->post('deviceBrand');
     $deviceModel = $app->request->post('deviceModel');
+    $latitude = $app->request->post('latitude');
+    $longitude = $app->request->post('longitude');
     $db = new DbOperation();
-    $res = $db->createUser($name, $phone, $deviceId, $deviceBrand, $deviceModel);
+    $res = $db->createUser($name, $phone, $deviceId, $deviceBrand, $deviceModel,$latitude,$longitude);
     if ($res == 0) {
         // $response["error"] = false;
         // $response["message"] = "You are successfully registered";
@@ -126,7 +128,7 @@ $app->post('/createUser', function () use ($app) {
         $response = array();
         $response['error'] = false;
         $response['place'] = array();
-
+		//$response['userId'] = $res['id'];
         while($row = $result->fetch_assoc()){
             $temp = array();
             $temp['id'] = $row['id'];
@@ -168,6 +170,8 @@ $app->get('/users', function() use ($app){
         $temp['deviceId'] = $row['deviceId'];
         $temp['deviceBrand'] = $row['deviceBrand'];
         $temp['deviceModel'] = $row['deviceModel'];
+        $temp['latitude'] = $row['latitude'];
+        $temp['longitude'] = $row['longitude'];
         array_push($response['users'],$temp);
     }
 
@@ -210,14 +214,14 @@ function verifyRequiredParams($required_fields){
 }
 
 /* *
- * URL: http://localhost/Monitor/v1/createPlace
- * Parameters: name, latitude, longitude, raidus, address, phone
+ * URL: http://localhost/Monitor/v1/updateToken
+ * Parameters: name, phone
  * Method: POST
  * */
 $app->post('/updateToken', function () use ($app) {
     verifyRequiredParams(array('name', 'token'));
     $response = array();
-    $name = $app->request->post('name');
+	$name = $app->request->post('name');
     $token = $app->request->post('token');
     $db = new DbOperation();
     $res = $db->updateToken($name, $token);

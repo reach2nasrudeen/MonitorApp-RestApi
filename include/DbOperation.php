@@ -63,9 +63,9 @@ class DbOperation
     }
 
     //Method to register a new user
-    public function createUser($name,$phone,$deviceId,$deviceBrand,$deviceModel){
-        $stmt = $this->con->prepare("INSERT INTO users (name,phone,deviceId,deviceBrand,deviceModel) values(?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $name, $phone, $deviceId, $deviceBrand, $deviceModel);
+    public function createUser($name,$phone,$deviceId,$deviceBrand,$deviceModel,$latitude,$longitude){
+        $stmt = $this->con->prepare("INSERT INTO users (name,phone,deviceId,deviceBrand,deviceModel,latitude,longitude) values(?, ?, ?, ?, ?,?,?)");
+        $stmt->bind_param("sssssss", $name, $phone, $deviceId, $deviceBrand, $deviceModel,$latitude,$longitude);
         $result = $stmt->execute();
         $stmt->close();
         if ($result) {
@@ -114,8 +114,7 @@ class DbOperation
     }
 
     public function updateToken($name,$token) {
-        $stmt = $this->con->prepare("INSERT INTO users (Name, Token) VALUES ('$name', '$token') "
-        ." ON DUPLICATE KEY UPDATE Token = '$token';");
+        $stmt = $this->con->prepare("INSERT INTO userstoken (Name, Token) VALUES (?,?)");
         $stmt->bind_param("ss", $name, $token);
         $result = $stmt->execute();
         $stmt->close();
@@ -127,7 +126,7 @@ class DbOperation
     }
 
     public function getAllTokens(){
-        $stmt = $this->con->prepare("SELECT * FROM usersToken");
+        $stmt = $this->con->prepare("SELECT * FROM userstoken");
         $stmt->execute();
         $users = $stmt->get_result();
         $stmt->close();
