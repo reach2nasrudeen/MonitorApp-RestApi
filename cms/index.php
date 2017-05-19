@@ -31,7 +31,7 @@ $app->get('/login', function() use ($app){
                 <div class="container">
                     <div class="intro-text">
                         <h2>Login</h2>
-                        <p>Please enter the username and password below</p>
+                        <p>Enter your registered email address and password to proceed.</p>
                     </div>
                     <div class="row">
                         <div class="col-xs-3"></div>
@@ -104,7 +104,7 @@ $app->get('/register', function() use ($app){
                 <div class="container">
                     <div class="intro-text">
                         <h2>Register</h2>
-                        <p>Please enter the username and password below</p>
+                        <p>Please register here to get more access to the account.</p>
                     </div>
                     <div class="row">
                         <div class="col-xs-3"></div>
@@ -184,6 +184,14 @@ $app->get('/placeconfig', function() use ($app){
             <link rel="stylesheet" href="css/custom.css">
             <link rel="stylesheet" href="css/bootstrap.min.css">
         </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">Users</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
         <body>
             <form method ="post" action="">
                 <div class="container">
@@ -248,9 +256,7 @@ $app->post('/placeconfig', function() use ($app){
                     $tokens[] = $row["Token"];
                 }
             }
-
-
-            $message = array("message" => " FCM PUSH NOTIFICATION TEST MESSAGE");
+            $message = array('name'=>$name,'phone'=>$phone,'address'=>$address,'latitude'=>$latitude,'longitude'=>$longitude,'radius'=>$radius);
             $message_status = send_notification($tokens, $message);
             echo $message_status;
             header('Location: '.'/Monitor/cms/account');
@@ -286,12 +292,6 @@ $app->get('/logout', function() use ($app){
 $app->get('/account', function() use ($app){
     session_start();
     if(isset($_SESSION["username"])){
-        echo '<div>Need to logout? <a href="logout">click here</a></div>';
-        echo '<div>Need to login? <a href="login">click here</a></div>';
-        echo '<div>Need to register? <a href="register">click here</a></div>';
-        echo '<div>Need to configure your place? <a href="placeconfig">click here</a></div>';
-        echo '<div>Need to see all your users? <a href="users">click here</a></div>';
-        echo '<div>Need to see all your updateuser? <a href="updateuser?id=25">click here</a></div>';
         $db = new DbOperation();
         $result = $db->getPlace();
         while($row = $result->fetch_assoc()){
@@ -313,6 +313,12 @@ $app->get('/account', function() use ($app){
                   map: map
                 });';
         }
+        $marker .='var tamil = {lat: '.$latitude.', lng: '.$longitude.'};
+            var marker = new google.maps.Marker({
+                  position: tamil,
+                  label:"'.$name.'",
+                  map: map
+                });';
         
         $response = '<!DOCTYPE html>
         <html lang="en">
@@ -323,45 +329,65 @@ $app->get('/account', function() use ($app){
             <style>
                #map {
                 height: 400px;
-                width: 100%;
+                width: 70%;
+                left:15%;
                }
             </style>
         </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">Users</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
         <body>
             <form method ="post" action="">
                 <div class="container">
                     <div class="intro-text">
-                        <h2>All Users</h2>
-                        <p>All users registered. </p>
+                        <h2>User Monitoring System</h2>
                     </div>
                     <div class="row">
                         <div class="col-xs-3"></div>
                         <div class="col-xs-6">
-                            <div><label><strong>Name :</strong></label><span>'.$name.'</span>
-                            <label><strong>Phone :</strong></label>
+                            <div><label><strong>Place Name :</strong></label><span>'.$name.'</span>
+                            <!--<label><strong>Phone :</strong></label>
                             <span>'.$phone.'</span>
                             <label><strong>Address :</strong></label>
-                            <span>'.$address.'</span></div>
+                            <span>'.$address.'</span></div>-->
                             <div><label><strong>Latitude :</strong></label>
-                            <span>'.$latitude.'</span>
-                            <label><strong>Longitude :</strong></label>
-                            <span>'.$longitude.'</span>
-                            <label><strong>Radius :</strong></label>
+                            <span>'.$latitude.'</span></div>
+                            <div><label><strong>Longitude :</strong></label>
+                            <span>'.$longitude.'</span></div>
+                            <div><label><strong>Radius :</strong></label>
                             <span>'.$radius.'</span></div>
                         </div>
                     </div>
                 </div>
             </form>
-            <h3>My Google Maps Demo</h3>
             <div id="map"></div>
             <script>
               function initMap() {
-                var tamil = {lat: 13.0421184, lng: 80.2754489};
+                var tamil = {lat: '.$latitude.', lng: '.$longitude.'};
                 var map = new google.maps.Map(document.getElementById("map"), {
                   zoom: 17,
-                  center: tamil
+                  center: tamil,
+                  population: 2714856
                 });'.$marker.'
+                var cityCircle = new google.maps.Circle({
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.50,
+                    map: map,
+                    center: tamil.center,
+                    radius: .5 * 100
+                });
+
               }
+
             </script>
             <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPDOZ5f4CyAVVj5ZfzkhZRptyW81Vi2ko&callback=initMap">
@@ -421,6 +447,14 @@ $app->get('/users', function() use ($app){
             <link rel="stylesheet" href="css/custom.css">
             <link rel="stylesheet" href="css/bootstrap.min.css">
         </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">Users</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
         <body>
             <form method ="post" action="">
                 <div class="container">
@@ -514,12 +548,20 @@ $app->get('/updateuser', function() use ($app){
             <link rel="stylesheet" href="css/custom.css">
             <link rel="stylesheet" href="css/bootstrap.min.css">
         </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">Users</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
         <body>
             <form method ="post" action="">
                 <div class="container">
                     <div class="intro-text">
-                        <h2>Place Configuration</h2>
-                        <p>Please update the place details below</p>
+                        <h2>User details</h2>
+                        <p>Please update the user details below</p>
                     </div>
                     <div class="row">
                         <div class="col-xs-3"></div>

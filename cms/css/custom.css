@@ -1,11 +1,17 @@
 .intro-text{
 	text-align: center;
 }
-/* Bordered form */
-form {
-    border: 3px solid #f1f1f1;
+header{
+    background-color: #188;
 }
-
+header li a{ color: #fff;}
+header li{
+    /*float: right;*/
+    display: inline-block;
+    min-height: 60px;
+    padding: 20px;
+    padding-right: 20px;
+}
 /* Full-width inputs */
 input[type=text], input[type=password] {
     width: 100%;
