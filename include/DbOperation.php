@@ -125,4 +125,12 @@ class DbOperation
             return 1;
         }
     }
+
+    public function getAllTokens(){
+        $stmt = $this->con->prepare("SELECT * FROM usersToken");
+        $stmt->execute();
+        $users = $stmt->get_result();
+        $stmt->close();
+        return $users;
+    }
 }
