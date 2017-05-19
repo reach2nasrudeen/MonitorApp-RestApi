@@ -209,5 +209,27 @@ function verifyRequiredParams($required_fields){
     }
 }
 
+/* *
+ * URL: http://localhost/Monitor/v1/createPlace
+ * Parameters: name, latitude, longitude, raidus, address, phone
+ * Method: POST
+ * */
+$app->post('/updateToken', function () use ($app) {
+    verifyRequiredParams(array('name', 'token'));
+    $response = array();
+    $name = $app->request->post('name');
+    $token = $app->request->post('token');
+    $db = new DbOperation();
+    $res = $db->updateToken($name, $token);
+    if ($res == 0) {
+        $response["error"] = false;
+        $response["message"] = "Token updated successfully";
+        echoResponse(201, $response);
+    } else if ($res == 1) {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while updating";
+        echoResponse(200, $response);
+    }
+});
 
 $app->run();

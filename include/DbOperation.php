@@ -112,4 +112,17 @@ class DbOperation
         $stmt->close();
         return $users;
     }
+
+    public function updateToken($name,$token) {
+        $stmt = $this->con->prepare("INSERT INTO users (Name, Token) VALUES ('$name', '$token') "
+        ." ON DUPLICATE KEY UPDATE Token = '$token';");
+        $stmt->bind_param("ss", $name, $token);
+        $result = $stmt->execute();
+        $stmt->close();
+        if ($result) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }
