@@ -624,7 +624,7 @@ function send_notification ($tokens, $message) {
     );
 
     $headers = array(
-        'Authorization:key = YOUR_KEY ',
+        'Authorization:key = AIzaSyA6aGLy27C1_nq-A5mih1rlzWImlq2ThsI ',
         'Content-Type: application/json'
     );
 
