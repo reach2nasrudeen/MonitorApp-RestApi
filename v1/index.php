@@ -9,142 +9,29 @@ require '.././libs/Slim/Slim.php';
 $app = new \Slim\Slim();
 
 /* *
- * URL: http://localhost/Monitor/cms/login
- * Parameters: none
- * Method: GET
- * */
-$app->get('/login', function() use ($app){
-    $response = array();
-    $response['error'] = false;
-    $response['login'] = '<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link rel="stylesheet" href="css/custom.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-    </head>
-    <body>
-        <form action="">
-            <div class="container">
-                <div class="intro-text">
-                    <h2>Login</h2>
-                    <p>Please enter the username and password below</p>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-6">
-                        <label><strong>Username</strong></label>
-                        <input type="text" placeholder="Enter Username" name="username">
-                        <label><strong>Password</strong></label>
-                        <input type="password" placeholder="Enter Password" name="password">
-                        <button type="submit">Login</button>
-                        <div>Dont have an account? <a href="register">Register here</a></div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </body>
-    </html>';
-    echoResponse(200, $response);
-});
-
-/* *
- * URL: http://localhost/Monitor/v1/createPlace
- * Parameters: name, latitude, longitude, raidus, address, phone
- * Method: POST
- * */
-$app->post('/createPlace', function () use ($app) {
-    verifyRequiredParams(array('name', 'latitude', 'longitude','raidus','address','phone'));
-    $response = array();
-    $name = $app->request->post('name');
-    $latitude = $app->request->post('latitude');
-    $longitude = $app->request->post('longitude');
-    $raidus = $app->request->post('raidus');
-    $address = $app->request->post('address');
-    $phone = $app->request->post('phone');
-    $db = new DbOperation();
-    $res = $db->createPlace($name, $latitude, $longitude, $raidus, $address, $phone);
-    if ($res == 0) {
-        $response["error"] = false;
-        $response["message"] = "Place successfully registered";
-        echoResponse(201, $response);
-    } else if ($res == 1) {
-        $response["error"] = true;
-        $response["message"] = "Oops! An error occurred while registereing";
-        echoResponse(200, $response);
-    }
-});
-
-/* *
- * URL: http://localhost/Monitor/v1/place
- * Parameters: none
- * Method: GET
- * */
-$app->get('/place', function() use ($app){
-    $db = new DbOperation();
-    $result = $db->getPlace();
-    $response = array();
-    $response['error'] = false;
-    $response['place'] = array();
-
-    while($row = $result->fetch_assoc()){
-        $temp = array();
-        $temp['id'] = $row['id'];
-        $temp['name'] = $row['name'];
-        $temp['latitude'] = $row['latitude'];
-        $temp['longitude'] = $row['longitude'];
-        $temp['radius'] = $row['radius'];
-        $temp['address'] = $row['address'];
-        $temp['phone'] = $row['phone'];
-        array_push($response['place'],$temp);
-    }
-
-    echoResponse(200,$response);
-});
-
-/* *
- * URL: http://localhost/Monitor/v1/createUser
+ * URL: http://localhost/DemoApp/v1/createUser
  * Parameters: name, phone, deviceId, deviceBrand, deviceModel
  * Method: POST
  * */
 $app->post('/createUser', function () use ($app) {
-    verifyRequiredParams(array('name', 'phone', 'deviceId','deviceBrand','deviceModel','latitude','longitude'));
+    verifyRequiredParams(array('name', 'phone', 'password'));
     $response = array();
     $name = $app->request->post('name');
     $phone = $app->request->post('phone');
-    $deviceId = $app->request->post('deviceId');
-    $deviceBrand = $app->request->post('deviceBrand');
-    $deviceModel = $app->request->post('deviceModel');
-    $latitude = $app->request->post('latitude');
-    $longitude = $app->request->post('longitude');
+    $password = $app->request->post('password');
     $db = new DbOperation();
-    $res = $db->createUser($name, $phone, $deviceId, $deviceBrand, $deviceModel,$latitude,$longitude);
-    if ($res == 0) {
-        // $response["error"] = false;
-        // $response["message"] = "You are successfully registered";
-        // echoResponse(201, $response);
-        $db = new DbOperation();
-        $result = $db->getPlace();
-        $response = array();
-        $response['error'] = false;
-        $response['place'] = array();
-		//$response['userId'] = $res['id'];
-        while($row = $result->fetch_assoc()){
-            $temp = array();
-            $temp['id'] = $row['id'];
-            $temp['name'] = $row['name'];
-            $temp['latitude'] = $row['latitude'];
-            $temp['longitude'] = $row['longitude'];
-            $temp['radius'] = $row['radius'];
-            $temp['address'] = $row['address'];
-            $temp['phone'] = $row['phone'];
-            array_push($response['place'],$temp);
-        }
-        echoResponse(200,$response);
-    } else if ($res == 1) {
+    $res = $db->createUser($name, $phone, $password);
+    if ($res == 1) {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while registereing";
         echoResponse(200, $response);
+       
+    } else {
+        $db = new DbOperation();
+        $response = array();
+        $response['error'] = false;
+        $response['id']= $res;
+        echoResponse(200,$response);
     }
 });
 
@@ -153,11 +40,14 @@ $app->post('/createUser', function () use ($app) {
  * URL: http://localhost/Monitor/v1/users
  * Parameters: none
  * Authorization: Put API Key in Request Header
- * Method: GET
+ * Method: POST
  * */
-$app->get('/users', function() use ($app){
+$app->get('/loginUser', function() use ($app){
+    verifyRequiredParams(array('phone', 'password'));
+    $phone = $app->request->get('phone');
+    $password = $app->request->get('password');
     $db = new DbOperation();
-    $result = $db->getAllUsers();
+    $result = $db->getUserById($phone,$password);
     $response = array();
     $response['error'] = false;
     $response['users'] = array();
@@ -167,11 +57,6 @@ $app->get('/users', function() use ($app){
         $temp['id'] = $row['id'];
         $temp['name'] = $row['name'];
         $temp['phone'] = $row['phone'];
-        $temp['deviceId'] = $row['deviceId'];
-        $temp['deviceBrand'] = $row['deviceBrand'];
-        $temp['deviceModel'] = $row['deviceModel'];
-        $temp['latitude'] = $row['latitude'];
-        $temp['longitude'] = $row['longitude'];
         array_push($response['users'],$temp);
     }
 
@@ -212,28 +97,5 @@ function verifyRequiredParams($required_fields){
         $app->stop();
     }
 }
-
-/* *
- * URL: http://localhost/Monitor/v1/updateToken
- * Parameters: name, phone
- * Method: POST
- * */
-$app->post('/updateToken', function () use ($app) {
-    verifyRequiredParams(array('name', 'token'));
-    $response = array();
-	$name = $app->request->post('name');
-    $token = $app->request->post('token');
-    $db = new DbOperation();
-    $res = $db->updateToken($name, $token);
-    if ($res == 0) {
-        $response["error"] = false;
-        $response["message"] = "Token updated successfully";
-        echoResponse(201, $response);
-    } else if ($res == 1) {
-        $response["error"] = true;
-        $response["message"] = "Oops! An error occurred while updating";
-        echoResponse(200, $response);
-    }
-});
 
 $app->run();
