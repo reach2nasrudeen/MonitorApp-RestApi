@@ -119,7 +119,7 @@ $app->post('/createUser', function () use ($app) {
     $longitude = $app->request->post('longitude');
     $db = new DbOperation();
     $res = $db->createUser($name, $phone, $deviceId, $deviceBrand, $deviceModel,$latitude,$longitude);
-    if ($res == 0) {
+    if ($res != 0) {
         // $response["error"] = false;
         // $response["message"] = "You are successfully registered";
         // echoResponse(201, $response);
@@ -127,6 +127,7 @@ $app->post('/createUser', function () use ($app) {
         $result = $db->getPlace();
         $response = array();
         $response['error'] = false;
+		$response['userId'] = $res;
         $response['place'] = array();
 		//$response['userId'] = $res['id'];
         while($row = $result->fetch_assoc()){
@@ -141,11 +142,53 @@ $app->post('/createUser', function () use ($app) {
             array_push($response['place'],$temp);
         }
         echoResponse(200,$response);
-    } else if ($res == 1) {
+    } else {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while registereing";
         echoResponse(200, $response);
     }
+});
+/* *
+ * URL: http://localhost/Monitor/v1/createUser
+ * Parameters: name, phone, deviceId, deviceBrand, deviceModel
+ * Method: POST
+ * */
+$app->post('/checkUserExist', function () use ($app) {
+    verifyRequiredParams(array('phone'));
+    $response = array();
+    $phone = $app->request->post('phone');
+    $db = new DbOperation();
+    $result = $db->checkUserExist($phone);
+	$response = array();
+	$response['error'] = false;
+	$response['user'] = array();
+	//$response['userId'] = $res['id'];
+	while($row = $result->fetch_assoc()){
+		$temp = array();
+		$temp['id'] = $row['id'];
+		$temp['name'] = $row['name'];
+		$temp['deviceId'] = $row['deviceId'];
+		$temp['deviceBrand'] = $row['deviceBrand'];
+		$temp['deviceModel'] = $row['deviceModel'];
+		$temp['latitude'] = $row['latitude'];
+		$temp['longitude'] = $row['longitude'];
+		$temp['phone'] = $row['phone'];
+		array_push($response['user'],$temp);
+	}
+	$result1 = $db->getPlace();
+	$response['place'] = array();
+	while($row = $result1->fetch_assoc()){
+		$temp = array();
+		$temp['id'] = $row['id'];
+		$temp['name'] = $row['name'];
+		$temp['latitude'] = $row['latitude'];
+		$temp['longitude'] = $row['longitude'];
+		$temp['radius'] = $row['radius'];
+		$temp['address'] = $row['address'];
+		$temp['phone'] = $row['phone'];
+		array_push($response['place'],$temp);
+	}
+	echoResponse(200,$response);
 });
 
 

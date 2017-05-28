@@ -450,7 +450,9 @@ $app->get('/users', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
-            <li class="active"><a href="users">Users</a></li>
+            <li class="active"><a href="users">Call Logs</a></li>
+            <li class="active"><a href="users">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>

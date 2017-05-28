@@ -68,10 +68,11 @@ class DbOperation
         $stmt->bind_param("sssssss", $name, $phone, $deviceId, $deviceBrand, $deviceModel,$latitude,$longitude);
         $result = $stmt->execute();
         $stmt->close();
+        $id = $this->con->insert_id;
         if ($result) {
-            return 0;
+            return $id;
         } else {
-            return 1;
+            return 0;
         }
     }
 
@@ -87,7 +88,14 @@ class DbOperation
             return 1;
         }
     }
-
+	//Method to fetch user by phone from database
+    public function checkUserExist($phone){
+        $stmt = $this->con->prepare("SELECT * FROM users where phone = '$phone'");
+        $stmt->execute();
+        $users = $stmt->get_result();
+        $stmt->close();
+        return $users;
+    }
     //Method to fetch all users from database
     public function getAllUsers(){
         $stmt = $this->con->prepare("SELECT * FROM users");

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 19, 2017 at 11:42 PM
--- Server version: 5.6.33
--- PHP Version: 7.0.14-2+deb.sury.org~trusty+1
+-- Host: 127.0.0.1
+-- Generation Time: May 28, 2017 at 07:26 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,14 +33,33 @@ CREATE TABLE `admin_users` (
   `password` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `admin_users`
+-- Table structure for table `call_logs`
 --
 
-INSERT INTO `admin_users` (`id`, `name`, `username`, `password`) VALUES
-(1, 'Ragubathi', 'ragu', 'bathi'),
-(4, 'mbfdev', 'mbfdev', 'mbfzse45rdx'),
-(5, 'nasrudeen', 'nasrudeen', 'nasrudeen');
+CREATE TABLE `call_logs` (
+  `id` int(11) NOT NULL,
+  `userId` varchar(5) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `type` varchar(15) NOT NULL,
+  `date` varchar(50) NOT NULL,
+  `duration` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contacts`
+--
+
+CREATE TABLE `contacts` (
+  `id` int(11) NOT NULL,
+  `userId` varchar(5) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `phone` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -57,13 +76,6 @@ CREATE TABLE `place` (
   `address` varchar(150) NOT NULL,
   `phone` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `place`
---
-
-INSERT INTO `place` (`id`, `name`, `latitude`, `longitude`, `radius`, `address`, `phone`) VALUES
-(1, 'Office new place', 13.0426184, 80.2754489, 22, 'Chennai', '9362746120');
 
 -- --------------------------------------------------------
 
@@ -82,25 +94,16 @@ CREATE TABLE `users` (
   `longitude` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `phone`, `deviceId`, `deviceBrand`, `deviceModel`, `latitude`, `longitude`) VALUES
-(25, 'Balaji Bedd', '7502011642', '8eb56b30866bbdcb', 'SAMSUNG', 'SM-G930F', 13.0421184, 80.2754489),
-(26, 'Nasrudeen', '9488847497', '8eb56b30866bbdcb', 'SAMSUNG', 'SM-G930F', 13.0420184, 80.2752489),
-(27, 'Nasrudeen', '9488847497', '8eb56b30866bbdcb', 'SAMSUNG', 'SM-G930F', 13.0421084, 80.2744489);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usersToken`
+-- Table structure for table `userstoken`
 --
 
-CREATE TABLE `usersToken` (
+CREATE TABLE `userstoken` (
   `id` int(20) NOT NULL,
-  `Name` varchar(20) DEFAULT NULL,
-  `Token` varchar(200) NOT NULL
+  `Name` varchar(20) NOT NULL,
+  `Token` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -111,6 +114,18 @@ CREATE TABLE `usersToken` (
 -- Indexes for table `admin_users`
 --
 ALTER TABLE `admin_users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `call_logs`
+--
+ALTER TABLE `call_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contacts`
+--
+ALTER TABLE `contacts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -126,9 +141,9 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `usersToken`
+-- Indexes for table `userstoken`
 --
-ALTER TABLE `usersToken`
+ALTER TABLE `userstoken`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `Token` (`Token`);
 
@@ -140,7 +155,17 @@ ALTER TABLE `usersToken`
 -- AUTO_INCREMENT for table `admin_users`
 --
 ALTER TABLE `admin_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `call_logs`
+--
+ALTER TABLE `call_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `place`
 --
@@ -150,12 +175,12 @@ ALTER TABLE `place`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
--- AUTO_INCREMENT for table `usersToken`
+-- AUTO_INCREMENT for table `userstoken`
 --
-ALTER TABLE `usersToken`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `userstoken`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
