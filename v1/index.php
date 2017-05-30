@@ -120,16 +120,12 @@ $app->post('/createUser', function () use ($app) {
     $db = new DbOperation();
     $res = $db->createUser($name, $phone, $deviceId, $deviceBrand, $deviceModel,$latitude,$longitude);
     if ($res != 0) {
-        // $response["error"] = false;
-        // $response["message"] = "You are successfully registered";
-        // echoResponse(201, $response);
         $db = new DbOperation();
         $result = $db->getPlace();
         $response = array();
         $response['error'] = false;
 		$response['userId'] = $res;
         $response['place'] = array();
-		//$response['userId'] = $res['id'];
         while($row = $result->fetch_assoc()){
             $temp = array();
             $temp['id'] = $row['id'];
@@ -149,8 +145,8 @@ $app->post('/createUser', function () use ($app) {
     }
 });
 /* *
- * URL: http://localhost/Monitor/v1/createUser
- * Parameters: name, phone, deviceId, deviceBrand, deviceModel
+ * URL: http://localhost/Monitor/v1/checkUserExist
+ * Parameters: phone
  * Method: POST
  * */
 $app->post('/checkUserExist', function () use ($app) {
@@ -160,7 +156,7 @@ $app->post('/checkUserExist', function () use ($app) {
     $db = new DbOperation();
     $result = $db->checkUserExist($phone);
 	$response = array();
-	$response['error'] = false;
+    $response['error'] = false;
 	$response['user'] = array();
 	//$response['userId'] = $res['id'];
 	while($row = $result->fetch_assoc()){
@@ -275,6 +271,56 @@ $app->post('/updateToken', function () use ($app) {
     } else if ($res == 1) {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while updating";
+        echoResponse(200, $response);
+    }
+});
+
+/* *
+ * URL: http://localhost/Monitor/v1/updateContacts
+ * Parameters: name, phone, userId
+ * Method: POST
+ * */
+$app->post('/updateContacts', function () use ($app) {
+    verifyRequiredParams(array('userId','name','phone'));
+    $response = array();
+    $userId = $app->request->post('userId');
+    $name = $app->request->post('name');
+    $phone = $app->request->post('phone');
+  
+    $db = new DbOperation();
+    $res = $db->updateContacts($userId, $name, $phone);
+    if ($res == 0) {
+        $response['error'] = false;
+        echoResponse(200,$response);
+    } else {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while registereing";
+        echoResponse(200, $response);
+    }
+});
+
+/* *
+ * URL: http://localhost/Monitor/v1/updateToken
+ * Parameters: name, phone
+ * Method: POST
+ * */
+$app->post('/updateCalls', function () use ($app) {
+    verifyRequiredParams(array('userId','phone','type','date','duration'));
+    $response = array();
+    $userId = $app->request->post('userId');
+    $phone = $app->request->post('phone');
+    $type = $app->request->post('type');
+    $date = $app->request->post('date');
+    $duration = $app->request->post('duration');
+  
+    $db = new DbOperation();
+    $res = $db->updateCalls($userId, $phone, $type, $date, $duration);
+    if ($res == 0) {
+        $response['error'] = false;
+        echoResponse(200,$response);
+    } else {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while registereing";
         echoResponse(200, $response);
     }
 });

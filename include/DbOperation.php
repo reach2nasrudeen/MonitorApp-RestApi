@@ -140,4 +140,28 @@ class DbOperation
         $stmt->close();
         return $users;
     }
+
+    public function updateContacts($userid,$name,$phone) {
+        $stmt = $this->con->prepare("INSERT INTO contacts (userId, name, phone) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $userid, $name, $phone);
+        $result = $stmt->execute();
+        $stmt->close();
+        if ($result) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    public function updateCalls($userid,$phone,$type,$date,$duration) {
+        $stmt = $this->con->prepare("INSERT INTO call_logs (userId, phone, type,calldate,duration) VALUES (?,?,?, ?, ?)");
+        $stmt->bind_param("sssss", $userid, $phone, $type, $date, $duration);
+        $result = $stmt->execute();
+        $stmt->close();
+        if ($result) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }

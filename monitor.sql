@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2017 at 07:26 PM
+-- Generation Time: May 30, 2017 at 02:51 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `monitor`
 --
+CREATE DATABASE IF NOT EXISTS `monitor` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `monitor`;
 
 -- --------------------------------------------------------
 
@@ -26,12 +28,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin_users`
 --
 
-CREATE TABLE `admin_users` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `admin_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `username` varchar(150) NOT NULL,
-  `password` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `password` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -39,14 +42,15 @@ CREATE TABLE `admin_users` (
 -- Table structure for table `call_logs`
 --
 
-CREATE TABLE `call_logs` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `call_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(5) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `type` varchar(15) NOT NULL,
-  `date` varchar(50) NOT NULL,
-  `duration` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `calldate` varchar(50) NOT NULL,
+  `duration` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=762 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -54,12 +58,14 @@ CREATE TABLE `call_logs` (
 -- Table structure for table `contacts`
 --
 
-CREATE TABLE `contacts` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `contacts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(5) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `phone` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `phone` varchar(15) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phone` (`phone`)
+) ENGINE=InnoDB AUTO_INCREMENT=8625 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -67,15 +73,16 @@ CREATE TABLE `contacts` (
 -- Table structure for table `place`
 --
 
-CREATE TABLE `place` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `place` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
   `radius` int(10) NOT NULL,
   `address` varchar(150) NOT NULL,
-  `phone` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `phone` varchar(15) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -83,16 +90,18 @@ CREATE TABLE `place` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `deviceId` varchar(25) NOT NULL,
   `deviceBrand` varchar(25) NOT NULL,
   `deviceModel` varchar(15) NOT NULL,
   `latitude` double NOT NULL,
-  `longitude` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `longitude` double NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -100,87 +109,14 @@ CREATE TABLE `users` (
 -- Table structure for table `userstoken`
 --
 
-CREATE TABLE `userstoken` (
-  `id` int(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `userstoken` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
   `Name` varchar(20) NOT NULL,
-  `Token` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Token` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Token` (`Token`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin_users`
---
-ALTER TABLE `admin_users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `call_logs`
---
-ALTER TABLE `call_logs`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `contacts`
---
-ALTER TABLE `contacts`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `place`
---
-ALTER TABLE `place`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `userstoken`
---
-ALTER TABLE `userstoken`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `Token` (`Token`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin_users`
---
-ALTER TABLE `admin_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `call_logs`
---
-ALTER TABLE `call_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `contacts`
---
-ALTER TABLE `contacts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `place`
---
-ALTER TABLE `place`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
---
--- AUTO_INCREMENT for table `userstoken`
---
-ALTER TABLE `userstoken`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
