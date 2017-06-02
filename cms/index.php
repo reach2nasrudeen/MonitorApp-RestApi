@@ -187,7 +187,9 @@ $app->get('/placeconfig', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
-            <li class="active"><a href="users">Users</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -337,7 +339,9 @@ $app->get('/account', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
-            <li class="active"><a href="users">Users</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -450,8 +454,8 @@ $app->get('/users', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
-            <li class="active"><a href="users">Call Logs</a></li>
-            <li class="active"><a href="users">Contacts List</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
             <li class="active"><a href="users">Users List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
@@ -553,7 +557,9 @@ $app->get('/updateuser', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
-            <li class="active"><a href="users">Users</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -622,6 +628,388 @@ $app->post('/updateuser', function() use ($app){
         } else if ($result == 1) {
             echo "Oops! An error occurred while updateing";
         }
+    }
+});
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/userslist
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/userscallslist', function() use ($app){
+    $db = new DbOperation();
+    $result = $db->getAllUsers();
+    $id = '';
+    $name = '';
+    $phone = '';
+    $deviceId = '';
+    $deviceBrand = '';
+    $deviceModel = '';
+    $latitude = '';
+    $longitude = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td><a href=/Monitor/cms/callslist?id='.$row['id'].'>'.$row['name'].'</td>';
+        $rows .= '<td>'.$row['phone'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No users found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>All Users</h2>
+                        <p>All users registered. </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th> 
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
+    }
+});
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/callslist
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/callslist', function() use ($app){
+    $id = $app->request->get('id');
+    $db = new DbOperation();
+    $result = $db->getCallListById($id);
+    $phone = '';
+    $type = '';
+    $calldate = '';
+    $duration = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td>'.$row['phone'].'</td>';
+        $rows .= '<td>'.$row['type'].'</td>';
+        $rows .= '<td>'.$row['calldate'].'</td>';
+        $rows .= '<td>'.$row['duration'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No calls found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>Call Logs</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Phone</th> 
+                                    <th>Call Type</th>
+                                    <th>Call Date</th>
+                                    <th>Call Duration</th>
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
+    }
+});
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/userscontactslist
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/userscontactslist', function() use ($app){
+    $db = new DbOperation();
+    $result = $db->getAllUsers();
+    $id = '';
+    $name = '';
+    $phone = '';
+    $deviceId = '';
+    $deviceBrand = '';
+    $deviceModel = '';
+    $latitude = '';
+    $longitude = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td><a href=/Monitor/cms/contactslist?id='.$row['id'].'>'.$row['name'].'</td>';
+        $rows .= '<td>'.$row['phone'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No users found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>All Users</h2>
+                        <p>All users registered. </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th> 
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
+    }
+});
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/contactslist
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/contactslist', function() use ($app){
+    $id = $app->request->get('id');
+    $db = new DbOperation();
+    $result = $db->getContactsListById($id);
+    $phone = '';
+    $name = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td>'.$row['name'].'</td>';
+        $rows .= '<td>'.$row['phone'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No Contacts found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="users">Users List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>Contacts List</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Contact Name</th> 
+                                    <th>Contact Phone Number</th>
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
     }
 });
 

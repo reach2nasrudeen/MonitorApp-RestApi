@@ -164,4 +164,22 @@ class DbOperation
             return 1;
         }
     }
+
+    //Method to fetch calls list by id from database
+    public function getCallListById($userId){
+        $stmt = $this->con->prepare("SELECT * FROM call_logs where userId = '$userId'");
+        $stmt->execute();
+        $users = $stmt->get_result();
+        $stmt->close();
+        return $users;
+    }
+
+    //Method to fetch contacts list by id from database
+    public function getContactsListById($userId){
+        $stmt = $this->con->prepare("SELECT * FROM contacts where userId = '$userId'");
+        $stmt->execute();
+        $users = $stmt->get_result();
+        $stmt->close();
+        return $users;
+    }
 }
