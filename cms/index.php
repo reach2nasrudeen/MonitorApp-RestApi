@@ -350,7 +350,7 @@ $app->get('/account', function() use ($app){
             <form method ="post" action="">
                 <div class="container">
                     <div class="intro-text">
-                        <h2>User Monitoring System</h2>
+                        <h2>Contemporary Wiretapping using Android Geofencing with a Centralized Content Management System</h2>
                     </div>
                     <div class="row">
                         <div class="col-xs-3"></div>
@@ -685,7 +685,7 @@ $app->get('/userscallslist', function() use ($app){
             <form method ="post" action="">
                 <div class="container">
                     <div class="intro-text">
-                        <h2>All Users</h2>
+                        <h2>Call Logs</h2>
                         <p>All users registered. </p>
                     </div>
                     <div class="row">
@@ -879,7 +879,7 @@ $app->get('/userscontactslist', function() use ($app){
             <form method ="post" action="">
                 <div class="container">
                     <div class="intro-text">
-                        <h2>All Users</h2>
+                        <h2>Contacts List</h2>
                         <p>All users registered. </p>
                     </div>
                     <div class="row">
