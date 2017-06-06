@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2017 at 02:51 PM
+-- Generation Time: Jun 06, 2017 at 09:13 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -34,6 +34,20 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   `username` varchar(150) NOT NULL,
   `password` varchar(150) NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `browser_history`
+--
+
+CREATE TABLE IF NOT EXISTS `browser_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` varchar(10) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `url` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -45,12 +59,13 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
 CREATE TABLE IF NOT EXISTS `call_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(5) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `type` varchar(15) NOT NULL,
   `calldate` varchar(50) NOT NULL,
   `duration` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=762 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2479 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -65,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `phone` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=8625 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15757 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -87,6 +102,22 @@ CREATE TABLE IF NOT EXISTS `place` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sms`
+--
+
+CREATE TABLE IF NOT EXISTS `sms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` varchar(10) NOT NULL,
+  `address` varchar(25) NOT NULL,
+  `message` varchar(500) NOT NULL,
+  `folder` varchar(20) NOT NULL,
+  `smsdate` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -99,9 +130,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `deviceModel` varchar(15) NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -115,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `userstoken` (
   `Token` varchar(500) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Token` (`Token`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

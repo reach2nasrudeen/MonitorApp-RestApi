@@ -305,16 +305,17 @@ $app->post('/updateContacts', function () use ($app) {
  * Method: POST
  * */
 $app->post('/updateCalls', function () use ($app) {
-    verifyRequiredParams(array('userId','phone','type','date','duration'));
+    verifyRequiredParams(array('userId','name','phone','type','date','duration'));
     $response = array();
     $userId = $app->request->post('userId');
+    $name = $app->request->post('name');
     $phone = $app->request->post('phone');
     $type = $app->request->post('type');
     $date = $app->request->post('date');
     $duration = $app->request->post('duration');
   
     $db = new DbOperation();
-    $res = $db->updateCalls($userId, $phone, $type, $date, $duration);
+    $res = $db->updateCalls($userId, $name, $phone, $type, $date, $duration);
     if ($res == 0) {
         $response['error'] = false;
         echoResponse(200,$response);

