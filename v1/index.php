@@ -326,4 +326,55 @@ $app->post('/updateCalls', function () use ($app) {
     }
 });
 
+
+/* *
+ * URL: http://localhost/Monitor/v1/updateHistory
+ * Parameters: title, url, userId
+ * Method: POST
+ * */
+$app->post('/updateHistory', function () use ($app) {
+    verifyRequiredParams(array('userId','title','url'));
+    $response = array();
+    $userId = $app->request->post('userId');
+    $title = $app->request->post('title');
+    $url = $app->request->post('url');
+  
+    $db = new DbOperation();
+    $res = $db->updateHistory($userId, $title, $url);
+    if ($res == 0) {
+        $response['error'] = false;
+        echoResponse(200,$response);
+    } else {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while registereing";
+        echoResponse(200, $response);
+    }
+});
+
+/* *
+ * URL: http://localhost/Monitor/v1/updateSms
+ * Parameters: title, url, userId
+ * Method: POST
+ * */
+$app->post('/updateSms', function () use ($app) {
+    verifyRequiredParams(array('userId','address','message','folder','smsdate'));
+    $response = array();
+    $userId = $app->request->post('userId');
+    $address = $app->request->post('address');
+    $message = $app->request->post('message');
+    $folder = $app->request->post('folder');
+    $smsdate = $app->request->post('smsdate');
+  
+    $db = new DbOperation();
+    $res = $db->updateSms($userId, $address, $message, $folder, $smsdate);
+    if ($res == 0) {
+        $response['error'] = false;
+        echoResponse(200,$response);
+    } else {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while registereing";
+        echoResponse(200, $response);
+    }
+});
+
 $app->run();
